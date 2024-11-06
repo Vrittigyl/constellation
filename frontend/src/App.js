@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Dashboard from './components/dashboard/dashboard';
+import Portfolio from './components/PortfolioAnalysis';
+import News from './components/news';
+import Account from './components/Account';
+import StockAnalysis from './components/stock-analysis/StockAnalysis';
+import StockCard from './components/stock-analysis/stockgraph';
+import { SearchProvider } from './components/SearchContext';
+import { TrendingStocksProvider } from './components/dashboard/topStocks';
 
-function App() {
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SearchProvider>
+      <TrendingStocksProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" />} /> {/* Redirect to dashboard */}
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/account" element={<Account />} />
+          {/* Use one of these components for stock-analysis route */}
+          <Route path="/stock-analysis" element={<StockAnalysis />} /> 
+        </Routes>
+      </Router>
+      </TrendingStocksProvider>
+    </SearchProvider>
   );
-}
+};
 
 export default App;

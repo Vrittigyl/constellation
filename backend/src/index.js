@@ -1,22 +1,17 @@
-// Import necessary modules using ES modules
-import express from 'express';
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import connectDB from "./db/index.js"; // Correctly specify the index file
+import { app } from './app.js';
 
-// Load environment variables from .env
-dotenv.config();
-
-const app = express();
-
-// Middleware
-app.use(express.json());
-
-// Simple route to test if server is running
-app.get('/', (req, res) => {
-    res.send('Server is running...');
+dotenv.config({
+    path: "./env"
 });
 
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+connectDB()
+.then(() => {
+    app.listen(process.env.PORT, () => {
+        console.log(`Server is running at port: ${process.env.PORT}`);
+    });
+})
+.catch(err => {
+    console.error('Database connection error:', err);
 });
